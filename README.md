@@ -1,8 +1,8 @@
 # pic16f690-examples
 
-The [PIC16F690](https://microchip.com/wwwproducts/en/PIC16F690) is an 8-bit microcontroller, and here are some basic (really cool) things to do with it:
+The [PIC16F690](https://microchip.com/wwwproducts/en/PIC16F690) is an 8-bit microcontroller from Microchip, and here are some basic (really cool) things to do with it:
 
-  * [System clock](#system-clock) - configure the system clock
+  * [System clock](#system-clock) - configure the clock
   * [GPIO](#gpio) - toggle GPIO pins
 
 [PIC16F631/677/685/687/689/690 datasheet](http://ww1.microchip.com/downloads/en/DeviceDoc/40001262F.pdf)
