@@ -49,8 +49,11 @@ Let's use the internal oscillator at 8 MHz *and* output it on the CLKOUT pin ([s
 
 ```c
 #include <pic16f690.h>
+#include <stdint.h>
 
-static __code uint16_t __at(_CONFIG) config = _INTOSC;
+static __code uint16_t __at(_CONFIG) config =
+        _INTOSC & _WDTE_OFF & _PWRTE_OFF & _MCLRE_OFF &
+        _CP_OFF & _BOR_OFF & _IESO_OFF & _FCMEN_OFF;
 
 void main(void)
 {
@@ -59,11 +62,15 @@ void main(void)
 }
 ```
 
-FOSC<2:0> of the configuration word register is set to internal oscillator with CLKOUT. The 8 MHz high frequency oscillator is configured via IRCF<2:0> of the OSCCON register. And, then the internal oscillator is configured by setting the SCS bit of the OSCCON register.
+FOSC<2:0> of the configuration word register is set to internal oscillator with CLKOUT (```_INTOSC```). The 8 MHz high frequency oscillator is configured via IRCF<2:0> of the OSCCON register. And, then the internal oscillator is configured by setting the SCS bit of the OSCCON register.
 
 **Note**: take a couple minutes to read ```pic16f690.h```. It can be found here ```/usr/local/share/sdcc/non-free/include/pic14/pic16f690.h```.
 
 **Investigate**: The datasheet is somewhat inconsistent about the difference between FOSC<2:0> and SCS. SCS appears to control the MUX that selects between external and internal oscillator, despite its definition, while functionality such as CLKOUT as configured in FOSC<2:0> still takes effect.
+
+If we probe CLKOUT, we'll see a **2 MHz** square wave since CLKOUT is defined to be Fosc/4:
+
+![](https://i.postimg.cc/kGp48vqc/system-clock-intosc-scope1.png)
 
 ## GPIO
 
