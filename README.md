@@ -8,7 +8,7 @@ Wire up the PICkit 2 to the PIC16F690.
 
 ![](https://i.postimg.cc/wjCZbywj/IMG-1332.jpg)
 
-Note that a decoupling capacitor should be placed between Vdd and Vss. We will add that later.
+**Note**: a decoupling capacitor should be placed between Vdd and Vss. We will add that later.
 
 Write a program ([empty.c](empty.c)) in C:
 
@@ -37,13 +37,33 @@ Program Succeeded.
 Operation Succeeded
 ```
 
-Note that the PIC16F690 can store 8 addresses in its stack:
+**Note**: ```--stack-size 8``` is used because the PIC16F690 can store 8 addresses in its stack:
 
 ![](https://i.postimg.cc/zvP8LD8H/stack.png)
 
 ## System clock
 
 ![](https://i.postimg.cc/QMjw3GZ2/system-clock.jpg)
+
+Let's use the internal oscillator at 8 MHz *and* output it on the CLKOUT pin ([system-clock-intosc.c](system-clock-intosc.c)):
+
+```c
+#include <pic16f690.h>
+
+static __code uint16_t __at(_CONFIG) config = _INTOSC;
+
+void main(void)
+{
+        IRCF2 = 1; IRCF1 = 1; IRCF0 = 1;  // Fosc = 8 MHz
+        SCS = 1;
+}
+```
+
+FOSC<2:0> of the configuration word register is set to internal oscillator with CLKOUT. The 8 MHz high frequency oscillator is configured via IRCF<2:0> of the OSCCON register. And, then the internal oscillator is configured by setting the SCS bit of the OSCCON register.
+
+The datasheet is somewhat inconsistent about the difference between FOSC<2:0> and SCS. SCS appears to control the MUX that selects between external and internal oscillator, despite its definition, while functionality such as CLKOUT as configured in FOSC<2:0> still takes effect.
+
+**Note**: take a couple minutes to read ```pic16f690.h```. It can be found here ```/usr/local/share/sdcc/non-free/include/pic14/pic16f690.h```.
 
 ## GPIO
 
