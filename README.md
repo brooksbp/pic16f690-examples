@@ -6,7 +6,7 @@ We'll use ```sdcc``` to compile code and ```pk2cmd``` to load it into flash prog
 
 Wire up the PICkit 2 to the PIC16F690:
 
-![](images/pickit2.jpg){:height="20%" width="20%"}
+![](https://i.postimg.cc/wjCZbywj/IMG-1332.jpg)
 
 ## System clock
 
