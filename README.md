@@ -4,9 +4,11 @@ We'll use ```sdcc``` to compile code and ```pk2cmd``` to load it into flash prog
 
 ## Run a program
 
-Wire up the PICkit 2 to the PIC16F690 (note the missing decoupling capacitor):
+Wire up the PICkit 2 to the PIC16F690.
 
 ![](https://i.postimg.cc/wjCZbywj/IMG-1332.jpg)
+
+Note that a decoupling capacitor should be placed between Vdd and Vss. We will add that later.
 
 Write a program ([empty.c](empty.c)) in C:
 
