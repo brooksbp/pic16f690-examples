@@ -2,6 +2,12 @@
 
 We'll use ```sdcc``` to compile code and ```pk2cmd``` to load it into flash program memory. See [Install tools](#install-tools) for details.
 
+## Run a program
+
+Wire up the PICkit 2 to the PIC16F690:
+
+![PICkit 2](images/pickit2.jpg)
+
 ## System clock
 
 ## GPIO
