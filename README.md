@@ -70,7 +70,7 @@ FOSC<2:0> of the configuration word register is set to internal oscillator with 
 
 If we probe CLKOUT, we'll see a **2 MHz** square wave since CLKOUT is defined to be Fosc/4:
 
-![](https://i.postimg.cc/kGp48vqc/system-clock-intosc-scope1.png)
+![](https://i.postimg.cc/BZYtd4HK/system-clock-intosc-scope1.png)
 
 ## GPIO
 
