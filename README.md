@@ -72,9 +72,11 @@ If we probe CLKOUT, we'll see a **2 MHz** square wave since CLKOUT is defined to
 
 ![](https://i.postimg.cc/BZYtd4HK/system-clock-intosc-scope1.png)
 
-**How long does it take to switch to 8 MHz?**
+How long does it take to switch to 8 MHz?
 
 ![](https://i.postimg.cc/ZqsKXLyh/startup.png)
+
+Holy smokes! **380 us** from power up!
 
 ## GPIO
 
