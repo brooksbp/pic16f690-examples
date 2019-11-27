@@ -74,7 +74,7 @@ If we probe CLKOUT, we'll see a **2 MHz** square wave since CLKOUT is defined to
 
 **How long does it take to switch to 8 MHz?**
 
-![](https://i.postimg.cc/iTfQNSny/startup.png)
+![](https://i.postimg.cc/tTfQNSny/startup.png)
 
 ## GPIO
 
