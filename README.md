@@ -43,7 +43,7 @@ Note that the PIC16F690 can store 8 addresses in its stack:
 
 ## System clock
 
-
+![](https://i.postimg.cc/QMjw3GZ2/system-clock.jpg)
 
 ## GPIO
 
