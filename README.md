@@ -10,7 +10,7 @@ Wire up the PICkit 2 to the PIC16F690 (note the missing decoupling capacitor):
 
 Write a program in C: [empty.c](empty.c)
 
-```
+```c
 #include <pic16f690.h>
 
 void main(void)
