@@ -9,7 +9,7 @@ The [PIC16F690](https://microchip.com/wwwproducts/en/PIC16F690) is an 8-bit micr
 
 ## Install tools
 
-We'll use ```sdcc``` to compile code and ```pk2cmd``` to load it into flash program memory.
+We'll use ```sdcc``` to compile code and ```pk2cmd``` to load it into flash program memory. On Linux, of course.
 
 Build SDCC from source since Debian does not package a version of SDCC that supports pic14 and pic16 ports because of license requirements by Microchip.
 
