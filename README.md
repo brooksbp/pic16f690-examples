@@ -1,6 +1,6 @@
 # pic16f690-examples
 
-The [PIC16F690](https://microchip.com/wwwproducts/en/PIC16F690) is an 8-bit microcontroller from Microchip, and here are some basic (really cool) things to do with it:
+The [PIC16F690](https://microchip.com/wwwproducts/en/PIC16F690) is an 8-bit microcontroller from Microchip. Here are some examples:
 
   * [System clock](#system-clock) - configure the clock
   * [GPIO](#gpio) - toggle GPIO pins
@@ -9,7 +9,7 @@ The [PIC16F690](https://microchip.com/wwwproducts/en/PIC16F690) is an 8-bit micr
 
 ## Install tools
 
-We'll use ```sdcc``` to compile code and ```pk2cmd``` to load it into flash program memory. On Linux, of course.
+We'll use ```sdcc``` to compile code and ```pk2cmd``` to load it into flash program memory.
 
 Build SDCC from source since Debian does not package a version of SDCC that supports pic14 and pic16 ports because of license requirements by Microchip.
 
