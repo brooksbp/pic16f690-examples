@@ -4,9 +4,38 @@ We'll use ```sdcc``` to compile code and ```pk2cmd``` to load it into flash prog
 
 ## Run a program
 
-Wire up the PICkit 2 to the PIC16F690:
+Wire up the PICkit 2 to the PIC16F690 (note the missing decoupling capacitor):
 
 ![](https://i.postimg.cc/wjCZbywj/IMG-1332.jpg)
+
+Write a program in C: [empty.c](empty.c)
+
+```
+#include <pic16f690.h>
+
+void main(void)
+{
+        // Does nothing!
+}
+```
+
+Compile and run it!
+
+```
+$ sdcc -mpic14 -p16f690 --stack-size 8 --use-non-free empty.c
+message: Using default linker script "/usr/share/gputils/lkr/16f690_g.lkr".
+```
+
+```
+$ pk2cmd -PPIC16f690 -Fempty.hex -M -A5.0 -T
+PICkit 2 Program Report
+26-11-2019, 19:49:07
+Device Type: PIC16F690
+
+Program Succeeded.
+
+Operation Succeeded
+```
 
 ## System clock
 
