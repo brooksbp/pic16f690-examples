@@ -26,13 +26,7 @@ Compile and run it!
 ```
 $ sdcc -mpic14 -p16f690 --stack-size 8 --use-non-free empty.c
 message: Using default linker script "/usr/share/gputils/lkr/16f690_g.lkr".
-```
 
-Note that the PIC16F690 can store 8 addresses in its stack:
-
-![](https://i.postimg.cc/zvP8LD8H/stack.png)
-
-```
 $ pk2cmd -PPIC16f690 -Fempty.hex -M -A5.0 -T
 PICkit 2 Program Report
 26-11-2019, 19:49:07
@@ -42,6 +36,10 @@ Program Succeeded.
 
 Operation Succeeded
 ```
+
+Note that the PIC16F690 can store 8 addresses in its stack:
+
+![](https://i.postimg.cc/zvP8LD8H/stack.png)
 
 ## System clock
 
