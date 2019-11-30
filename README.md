@@ -154,3 +154,49 @@ void main(void)
 ```
 
 ![](https://i.postimg.cc/JhJ0D8Zt/gpio1.png)
+
+One loop iteration takes 6 instructions. Let's check the assembly (gpio1.asm):
+
+```asm
+_00106_DS_:
+;       .line   27; "gpio1.c"   RC2 = 1;
+        BANKSEL _PORTCbits
+        BSF     _PORTCbits,2
+;       .line   28; "gpio1.c"   RC2 = 0;
+        BCF     _PORTCbits,2
+        GOTO    _00106_DS_
+```
+
+If we look at section 2.2 Data Memory Organization of the PIC16F690 datasheet, we see that data memory is partitioned into four banks. The bank is selected by configuring RP<1:0> of the STATUS register. For example, to modify the OSCCON register, we must switch to Bank 1 first, and then write to address 0x8F.
+
+BANKSEL is not an instruction, but an assembler directive. To see the complete disassembly, see the list file (gpio1.lst):
+
+```asm
+                                           _00106_DS_:
+                                           ;    .line   27; "gpio1.c"   RC2 = 1;
+0000e7   1283     bcf     0x03, 0x5             BANKSEL _PORTCbits
+0000e8   1303     bcf     0x03, 0x6
+0000e9   1507     bsf     0x07, 0x2             BSF     _PORTCbits,2
+                                           ;    .line   28; "gpio1.c"   RC2 = 0;
+0000ea   1107     bcf     0x07, 0x2             BCF     _PORTCbits,2
+0000eb   28e7     goto    0x00e7                GOTO    _00106_DS_
+```
+
+Here we see that BANKSEL clears both RP bits in the STATUS register, which selects Bank 0. Notice the STATUS register is always at address 0x3 in each bank.
+
+So... we don't need to switch banks every time the loop body executes... let's rewrite the loop in assembly [gpio2.c](gpio2.c):
+
+```c
+__asm
+        banksel PORTC
+loop:
+        bsf PORTC, 2
+        bcf PORTC, 2
+        goto loop
+__endasm ;
+}
+```
+
+And we should now expect that the body of the loop takes 4 cycles to execute since BSF and BCF take 1 cycle each and GOTO takes 2 cycles:
+
+![](https://i.postimg.cc/3xrJrpJS/gpio2.png)
