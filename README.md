@@ -112,9 +112,45 @@ Holy smokes! **380 us** from power up!
 
 ## GPIO
 
-The PIC16F690 has general purpose I/O pins which are grouped into PORTA, PORTB, and PORTC.
+The PIC16F690 has general purpose I/O pins which are grouped into three ports. TRISA, TRISB, and TRISC can be configured to specify whether a pin is input or output, and PORTA, PORTB, PORTC can be read to get the value of an input pin or written to set the value of an output pin.
 
+**Note:** When using PORTA pins, ANSEL and ANSELH must be set to 0 to configure the pins as digital I/O. If the pin is configured as analog input, the digital I/O circuitry is disabled.
+
+How fast can we toggle a GPIO pin?
+
+[gpio1.c](gpio1.c)
+
+```c
+#include <pic16f690.h>
+#include <stdint.h>
+
+static __code uint16_t __at(_CONFIG) configword1 =
+        _INTOSC & _WDTE_OFF & _PWRTE_OFF & _MCLRE_OFF &
+        _CP_OFF & _BOR_OFF & _IESO_OFF & _FCMEN_OFF;
+
+void main(void)
+{
+        IRCF2 = 1; IRCF1 = 1; IRCF0 = 1;  // Fosc = 8 MHz
+        SCS = 1;
+
+        // Disable analog input mode
+        ANSEL = 0x00;
+        ANSELH = 0x00;
+
+        // Configure PORT I/O pins as output
+        TRISA = 0x00;
+        TRISC = 0x00;
+        TRISB = 0x00;
+
+        PORTA = 0x00;
+        PORTB = 0x00;
+        PORTC = 0x00;
+
+        for (;;) {
+                RC2 = 1;
+                RC2 = 0;
+        }
+}
 ```
-sdcc -mpic14 -p16f690 --stack-size 8 --use-non-free led.c
-pk2cmd -PPIC16f690 -Fled.hex -M -A5.0 -T
-```
+
+![](https://i.postimg.cc/JhJ0D8Zt/gpio1.png)
