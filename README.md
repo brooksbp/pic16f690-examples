@@ -197,6 +197,10 @@ __endasm ;
 }
 ```
 
-And we should now expect that the body of the loop takes 4 cycles to execute since BSF and BCF take 1 cycle each and GOTO takes 2 cycles:
+Now we should expect the body of the loop to take 4 cycles since BSF and BCF take 1 cycle each and GOTO takes 2 cycles:
 
 ![](https://i.postimg.cc/3xrJrpJS/gpio2.png)
+
+With a couple extra NOPs we can get a 50% duty cycle square wave. However, it has a jitter of ~10ns and is ~1.1kHz faster than expected:
+
+![](https://i.postimg.cc/901KL450/gpio3.png)
