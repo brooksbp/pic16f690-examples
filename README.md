@@ -7,7 +7,7 @@ The [PIC16F690](https://microchip.com/wwwproducts/en/PIC16F690) is an 8-bit micr
 
 [PIC16F631/677/685/687/689/690 datasheet](http://ww1.microchip.com/downloads/en/DeviceDoc/40001262F.pdf)
 
-## Install tools
+### Install tools
 
 We'll use ```sdcc``` to compile code and ```pk2cmd``` to load it into flash program memory.
 
@@ -34,7 +34,7 @@ sudo make install
 sudo cp /usr/share/pk2/PK2DeviceFile.dat /usr/local/bin
 ```
 
-## Run a program
+### Run a program
 
 Wire up the PICkit 2 to the PIC16F690.
 
