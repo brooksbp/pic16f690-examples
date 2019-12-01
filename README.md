@@ -41,7 +41,7 @@ Wire up the PICkit 2 to the PIC16F690.
 
 ![](https://i.postimg.cc/wjCZbywj/IMG-1332.jpg)
 
-**Note**: a decoupling capacitor should be placed between Vdd and Vss. We will add that later.
+**Note**: a decoupling capacitor should be placed between Vdd and Vss.
 
 Write a program ([empty.c](empty.c)) in C:
 
