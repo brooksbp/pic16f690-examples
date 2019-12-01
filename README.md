@@ -4,6 +4,7 @@ The [PIC16F690](https://microchip.com/wwwproducts/en/PIC16F690) is an 8-bit micr
 
   * [System clock](#system-clock) - configure the clock
   * [GPIO](#gpio) - toggle GPIO pins
+  * [Timer with interrupt](#timer-with-interrupt) - configure a timer to interrupt the processor
 
 [PIC16F631/677/685/687/689/690 datasheet](http://ww1.microchip.com/downloads/en/DeviceDoc/40001262F.pdf)
 
@@ -204,3 +205,49 @@ Now we should expect the body of the loop to take 4 cycles since BSF and BCF tak
 With a couple extra NOPs we can get a 50% duty cycle square wave. However, it has a jitter of ~10ns and is ~1.1kHz faster than expected:
 
 ![](https://i.postimg.cc/901KL450/gpio3.png)
+
+## Timer with interrupt
+
+Timer0 is an 8-bit counter that can be configured to increment according to either an internal or external clock source. When the timer overflows from 0xFF to 0x00, an interrupt will be generated.
+
+Example [timer-interrupt.c](timer-interrupt.c):
+
+```c
+#include <pic16f690.h>
+#include <stdint.h>
+
+static __code uint16_t __at(_CONFIG) configword1 =
+        _INTOSC & _WDTE_OFF & _PWRTE_OFF & _MCLRE_OFF &
+        _CP_OFF & _BOR_OFF & _IESO_OFF & _FCMEN_OFF;
+
+void isr(void) __interrupt(0)
+{
+        T0IF = 0;  // Clear timer interrupt flag.
+
+        RC2 = 0;
+        RC2 = 1;   // Set RC2 high for one cycle.
+        RC2 = 0;
+}
+
+void main(void)
+{
+        IRCF2 = 1; IRCF1 = 1; IRCF0 = 1;  // Fosc = 8 MHz
+        SCS = 1;
+
+        TRISC = 0x00;  // Configure PORTC pins as digital output.
+        PORTC = 0x00;  // Output logic zero on PORTC pins.
+
+        T0CS = 0;      // Use the internal instruction cycle clock (Fosc/4) as TMR0 clock source.
+        PSA = 1;       // Assign the prescaler to the WDT so that it doesn't affect TMR0.
+
+        INTCON = 0;    // Disable all interrupt enables and flags.
+        GIE = 1;       // Global interrupt enable.
+        T0IE = 1;      // Enable Timer0 interrupt.
+
+        TMR0 = 0;      // Reset counter to 0.
+
+        for (;;) {
+                // Do nothing!
+        }
+}
+```
