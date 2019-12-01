@@ -251,3 +251,48 @@ void main(void)
         }
 }
 ```
+
+![](https://i.postimg.cc/B65VvmgR/Capture.jpg)
+
+From the list file we see the interrupt service routine located at address 0x4 in program memory with quite a few instructions for saving/restoring a some special function registers:
+
+```asm
+                                           ;    .line   8; "timer-interrupt.c"  void isr(void) __interrupt(0)
+000004   00f2     movwf   0x72                  MOVWF   WSAVE
+000005   0e03     swapf   0x03, 0x0             SWAPF   STATUS,W
+000006   0183     clrf    0x03                  CLRF    STATUS
+000007   00f1     movwf   0x71                  MOVWF   SSAVE
+000008   080a     movf    0x0a, 0x0             MOVF    PCLATH,W
+000009   018a     clrf    0x0a                  CLRF    PCLATH
+00000a   00f0     movwf   0x70                  MOVWF   PSAVE
+00000b   0804     movf    0x04, 0x0             MOVF    FSR,W
+00000c   1283     bcf     0x03, 0x5             BANKSEL ___sdcc_saved_fsr
+00000d   1303     bcf     0x03, 0x6
+00000e   00ac     movwf   0x2c                  MOVWF   ___sdcc_saved_fsr
+                                           ;    .line   10; "timer-interrupt.c" T0IF = 0;  // Clear timer interrupt flag.
+00000f   1283     bcf     0x03, 0x5             BANKSEL _INTCONbits
+000010   1303     bcf     0x03, 0x6
+000011   110b     bcf     0x0b, 0x2             BCF     _INTCONbits,2
+                                           ;    .line   12; "timer-interrupt.c" RC2 = 0;
+000012   1107     bcf     0x07, 0x2             BCF     _PORTCbits,2
+                                           ;    .line   13; "timer-interrupt.c" RC2 = 1;  // Set RC2 high for one cycle.
+000013   1507     bsf     0x07, 0x2             BSF     _PORTCbits,2
+                                           ;    .line   14; "timer-interrupt.c" RC2 = 0;
+000014   1107     bcf     0x07, 0x2             BCF     _PORTCbits,2
+                                           ;    .line   15; "timer-interrupt.c" }
+000015   1283     bcf     0x03, 0x5             BANKSEL ___sdcc_saved_fsr
+000016   1303     bcf     0x03, 0x6
+000017   082c     movf    0x2c, 0x0             MOVF    ___sdcc_saved_fsr,W
+000018   1283     bcf     0x03, 0x5             BANKSEL FSR
+000019   1303     bcf     0x03, 0x6
+00001a   0084     movwf   0x04                  MOVWF   FSR
+00001b   0870     movf    0x70, 0x0             MOVF    PSAVE,W
+00001c   008a     movwf   0x0a                  MOVWF   PCLATH
+00001d   0183     clrf    0x03                  CLRF    STATUS
+00001e   0e71     swapf   0x71, 0x0             SWAPF   SSAVE,W
+00001f   0083     movwf   0x03                  MOVWF   STATUS
+000020   0ef2     swapf   0x72, 0x1             SWAPF   WSAVE,F
+000021   0e72     swapf   0x72, 0x0             SWAPF   WSAVE,W
+                                           END_OF_INTERRUPT:
+000022   0009     retfie                        RETFIE
+```
